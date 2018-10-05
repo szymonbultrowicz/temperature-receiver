@@ -7,5 +7,7 @@ before_install:
   - tar xf arduino-1.8.7-linux64.tar.xz
   - sudo mv arduino-1.8.7 /usr/local/share/arduino
   - sudo ln -s /usr/local/share/arduino/arduino /usr/local/bin/arduino
+install:
+  - arduino --install-library "rc-switch"
 script:
   - arduino --verify --board arduino:avr:uno main.ino
