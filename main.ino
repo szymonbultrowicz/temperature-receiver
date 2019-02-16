@@ -22,15 +22,22 @@ uint8_t batteryLevel = 0;
 char formattedTemperature[8];
 char formattedHumidity[8];
 char formattedVoltage[8];
+char formattedBatteryLevel[8];
+
+unsigned long lastRepaint = 0;
+
+struct LastReadings
+{
+    unsigned long temperature = 0;
+    unsigned long humidity = 0;
+    unsigned long voltage = 0;
+} lastReadings;
 
 unsigned long ledTimeout = 0;
 
-void setup()
+uint16_t clearIfOutdated(unsigned long lastReading, uint16_t value)
 {
-    Serial.begin(BAUD_RATE);
-    pinMode(LED_PIN, OUTPUT);
-    lcd.init();
-    analogWrite(5, 150);
+    return (millis() > lastReading + READING_TIMEOUT) ? 0 : value;
 }
 
 void updateState(char mode, uint16_t value)
@@ -39,18 +46,52 @@ void updateState(char mode, uint16_t value)
     {
     case 'T':
         temperature = value;
-        formatter.formatTemperature(value, formattedTemperature);
+        lastReadings.temperature = millis();
         break;
     case 'H':
         humidity = value;
-        formatter.formatHumidity(value, formattedHumidity);
+        lastReadings.humidity = millis();
         break;
     case 'V':
         voltage = value;
-        formatter.formatVoltage(value, formattedVoltage);
-        batteryLevel = batteryLevelCalculator.calculate(value);
+        lastReadings.voltage = millis();
         break;
     }
+}
+
+void formatValues()
+{
+    formatter.formatTemperature(temperature, formattedTemperature);
+    formatter.formatHumidity(humidity, formattedHumidity);
+    formatter.formatVoltage(voltage, formattedVoltage);
+    batteryLevel = batteryLevelCalculator.calculate(voltage);
+    formatter.formatBatteryLevel(batteryLevel, formattedBatteryLevel);
+}
+
+void checkOutdated()
+{
+    temperature = clearIfOutdated(lastReadings.temperature, temperature);
+    humidity = clearIfOutdated(lastReadings.humidity, humidity);
+    voltage = clearIfOutdated(lastReadings.voltage, voltage);
+}
+
+void repaint()
+{
+    formatValues();
+    lcd.writeValues(
+        formattedTemperature,
+        formattedHumidity,
+        formattedVoltage,
+        formattedBatteryLevel);
+    lastRepaint = millis();
+}
+
+void setup()
+{
+    Serial.begin(BAUD_RATE);
+    pinMode(LED_PIN, OUTPUT);
+    lcd.init();
+    analogWrite(5, 150);
 }
 
 void loop()
@@ -64,19 +105,17 @@ void loop()
         Serial.print(" ");
         Serial.println(reading.valid);
 
-        updateState(reading.mode, reading.value);
-
         if (reading.valid)
         {
-            lcd.writeValues(
-                formattedTemperature, 
-                formattedHumidity, 
-                formattedVoltage,
-                batteryLevel
-                );
+            updateState(reading.mode, reading.value);
         }
 
         ledNotifier.notify();
+    }
+
+    if (millis() > lastRepaint + REPAINT_INTERVAL) {
+        checkOutdated();
+        repaint();
     }
 
     ledNotifier.tryTurnOff();

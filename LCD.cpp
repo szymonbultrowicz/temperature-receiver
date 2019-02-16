@@ -21,7 +21,7 @@ void LCD::init()
     this->lcd->begin(16, 2);
 }
 
-void LCD::writeValues(char *temp, char *humidity, char *voltage, uint8_t level)
+void LCD::writeValues(char *temp, char *humidity, char *voltage, char* level)
 {
     this->lcd->setCursor(0, 0);
     this->lcd->print(temp);
@@ -36,7 +36,7 @@ void LCD::writeValues(char *temp, char *humidity, char *voltage, uint8_t level)
     this->lcd->print(voltage);
     this->lcd->print('V');
 
-    this->lcd->setCursor(13, 1);
+    this->lcd->setCursor(12, 1);
     this->lcd->print(level);
     this->lcd->print('%');
 }

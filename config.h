@@ -1,4 +1,6 @@
 #define BAUD_RATE 9600
+#define READING_TIMEOUT 30*1000  // ms
+#define REPAINT_INTERVAL 1000   //ms
 
 #define RX_PIN 3
 #define LED_PIN LED_BUILTIN

@@ -9,7 +9,7 @@ class LCD
 public:
   LCD(uint8_t startPin, uint8_t backlightPin);
   void init();
-  void writeValues(char *temp, char *humidity, char *voltage, uint8_t level);
+  void writeValues(char *temp, char *humidity, char *voltage, char* level);
 
 private:
   LiquidCrystal* lcd;
