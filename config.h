@@ -1,4 +1,6 @@
 #define BAUD_RATE 9600
 
 #define RX_PIN 3
-#define LED_PIN 13
+#define LED_PIN LED_BUILTIN
+#define LCD_START_PIN 8
+#define LCD_BACKLIGHT_PIN 5

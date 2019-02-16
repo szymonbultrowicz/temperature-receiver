@@ -5,3 +5,4 @@
 
 # Libraries used
 1. [rc-switch](https://github.com/sui77/rc-switch)
+1. [LiquidCrystal](https://www.arduino.cc/en/Reference/LiquidCrystal)
