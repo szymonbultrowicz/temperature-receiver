@@ -12,7 +12,7 @@ union ReadingConverter {
 
 Receiver::Receiver(unsigned int pin) {
     this->device = new RCSwitch();
-    this->device->enableReceive(pin);
+    this->device->enableReceive(digitalPinToInterrupt(pin));
     this->CRC8 = new FastCRC8();
 }
 
