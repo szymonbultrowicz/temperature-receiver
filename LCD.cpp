@@ -23,6 +23,8 @@ void LCD::init()
 
 void LCD::writeValues(char *temp, char *humidity, char *voltage, char* level)
 {
+    this->lcd->clear();
+
     this->lcd->setCursor(0, 0);
     this->lcd->print(temp);
     this->lcd->print((char)223);

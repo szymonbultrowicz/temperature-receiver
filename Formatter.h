@@ -3,8 +3,8 @@
 class Formatter
 {
   public:
-    char* formatTemperature(uint16_t value, char* buffer);
-    char* formatHumidity(uint16_t value, char* buffer);
-    char* formatVoltage(uint16_t value, char* buffer);
-    char* formatBatteryLevel(uint16_t value, char* buffer);
+    char* formatTemperature(int16_t value, char* buffer);
+    char* formatHumidity(int16_t value, char* buffer);
+    char* formatVoltage(int16_t value, char* buffer);
+    char* formatBatteryLevel(int16_t value, char* buffer);
 };

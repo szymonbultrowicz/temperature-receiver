@@ -3,7 +3,7 @@
 
 struct Reading {
     char mode;
-    uint16_t value;
+    int16_t value;
     uint8_t crc;
     boolean valid;
 };

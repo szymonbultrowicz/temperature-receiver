@@ -15,10 +15,10 @@ Formatter formatter;
 BatteryLevel batteryLevelCalculator(4400, 6300);
 LEDNotifier ledNotifier(LED_PIN);
 
-uint16_t temperature = 0;
-uint16_t humidity = 0;
-uint16_t voltage = 0;
-uint8_t batteryLevel = 0;
+int16_t temperature = 0;
+int16_t humidity = 0;
+int16_t voltage = 0;
+int8_t batteryLevel = 0;
 char formattedTemperature[8];
 char formattedHumidity[8];
 char formattedVoltage[8];
@@ -35,12 +35,12 @@ struct LastReadings
 
 unsigned long ledTimeout = 0;
 
-uint16_t clearIfOutdated(unsigned long lastReading, uint16_t value)
+int16_t clearIfOutdated(unsigned long lastReading, int16_t value)
 {
     return (millis() > lastReading + READING_TIMEOUT) ? 0 : value;
 }
 
-void updateState(char mode, uint16_t value)
+void updateState(char mode, int16_t value)
 {
     switch (mode)
     {
