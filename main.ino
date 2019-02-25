@@ -12,7 +12,7 @@ Receiver receiver(RX_PIN);
 LCD lcd(LCD_START_PIN, LCD_BACKLIGHT_PIN);
 
 Formatter formatter;
-BatteryLevel batteryLevelCalculator(4400, 6300);
+BatteryLevel batteryLevelCalculator(MIN_BATTERY_LEVEL, MAX_BATTERY_LEVEL);
 LEDNotifier ledNotifier(LED_PIN);
 
 int16_t temperature = 0;
