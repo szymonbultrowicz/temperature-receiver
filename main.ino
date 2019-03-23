@@ -24,6 +24,8 @@ char formattedHumidity[8];
 char formattedVoltage[8];
 char formattedBatteryLevel[8];
 
+bool buzzerOn = false;
+
 unsigned long lastRepaint = 0;
 
 struct LastReadings
@@ -45,6 +47,11 @@ void updateState(char mode, int16_t value)
     switch (mode)
     {
     case 'T':
+        if (value < BUZZ_TEMP_TRESHOLD && temperature >= BUZZ_TEMP_TRESHOLD) {
+            buzzerOn = true;
+        } else if (value >= BUZZ_TEMP_TRESHOLD) {
+            buzzerOn = false;
+        }
         temperature = value;
         lastReadings.temperature = millis();
         break;
@@ -92,10 +99,21 @@ void setup()
     pinMode(LED_PIN, OUTPUT);
     lcd.init();
     analogWrite(5, 150);
+    pinMode(BUZZER_PIN, OUTPUT);
+    pinMode(BUZZ_STOP_PIN, INPUT);
 }
 
 void loop()
 {
+    if (digitalRead(BUZZ_STOP_PIN) == HIGH) {
+        buzzerOn = false;
+    }
+    if (buzzerOn) {
+        tone(BUZZER_PIN, BUZZER_TONE);
+    } else {
+        noTone(BUZZER_PIN);
+    }
+
     if (receiver.isAvailable())
     {
         Reading reading = receiver.receive();

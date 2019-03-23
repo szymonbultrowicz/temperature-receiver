@@ -6,6 +6,11 @@
 #define LED_PIN LED_BUILTIN
 #define LCD_START_PIN 8
 #define LCD_BACKLIGHT_PIN 5
+#define BUZZER_PIN 6
+#define BUZZ_STOP_PIN 7
+
+#define BUZZER_TONE 1000
+#define BUZZ_TEMP_TRESHOLD 300 // 3 Celcius degrees
 
 #define MIN_BATTERY_LEVEL 4000 // 4 * 1V
 #define MAX_BATTERY_LEVEL 6400 // 4 * 1.6V
